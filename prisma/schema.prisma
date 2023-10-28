@@ -28,7 +28,8 @@ model ProjectName {
   title     String   @db.VarChar(100)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [id], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
   tasks     Task[]
 
   @@map("project_names")
@@ -39,7 +40,8 @@ model Task {
   todoList           String?     @db.VarChar(225)
   todoListOnProgress String?     @db.VarChar(225)
   todoListDone       String?     @db.VarChar(225)
-  projectName        ProjectName @relation(fields: [id], references: [id])
+  projectNameId      Int
+  projectName        ProjectName @relation(fields: [projectNameId], references: [id])
 
   @@map("tasks")
 }
