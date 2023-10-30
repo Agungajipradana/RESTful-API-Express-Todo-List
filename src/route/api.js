@@ -2,6 +2,7 @@ import express from "express";
 import userController from "../controller/userController.js";
 import projectNameController from "../controller/projectNameController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import taskController from "../controller/taskController.js";
 
 const userRouter = new express.Router();
 userRouter.use(authMiddleware);
@@ -18,5 +19,14 @@ userRouter.put("/api/users/:userId/project/:projectNameId", projectNameControlle
 userRouter.delete("/api/users/:userId/project/:projectNameId", projectNameController.remove);
 userRouter.get("/api/users/:userId/project", projectNameController.list);
 userRouter.get("/api/project", projectNameController.search);
+
+// Task API
+userRouter.post("/api/project/:projectNameId/task", taskController.create);
+userRouter.get("/api/project/:projectNameId/task/:taskId", taskController.get);
+userRouter.put("/api/project/:projectNameId/task/:taskId", taskController.update);
+userRouter.patch("/api/project/:projectNameId/task/:taskId", taskController.update);
+userRouter.delete("/api/project/:projectNameId/task/:taskId", taskController.remove);
+userRouter.get("/api/project/:projectNameId/task", taskController.list);
+userRouter.get("/api/task", taskController.search);
 
 export { userRouter };

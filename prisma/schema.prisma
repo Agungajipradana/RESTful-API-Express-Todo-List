@@ -40,6 +40,8 @@ model Task {
   todoList           String?     @db.VarChar(225)
   todoListOnProgress String?     @db.VarChar(225)
   todoListDone       String?     @db.VarChar(225)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
   projectNameId      Int
   projectName        ProjectName @relation(fields: [projectNameId], references: [id])
 

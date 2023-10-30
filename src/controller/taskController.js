@@ -1,13 +1,13 @@
-import projectNameService from "../service/projectNameService.js";
+import taskService from "../service/taskService.js";
 
-// create project name controller
+// create task controller
 const create = async (req, res, next) => {
   try {
     const user = req.user;
     const request = req.body;
-    const userId = req.params.userId;
+    const projectNameId = req.params.projectNameId;
 
-    const result = await projectNameService.create(user, userId, request);
+    const result = await taskService.create(user, projectNameId, request);
 
     res.status(200).json({
       data: result,
@@ -17,14 +17,14 @@ const create = async (req, res, next) => {
   }
 };
 
-// get project name controller
+// get task controller
 const get = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
     const projectNameId = req.params.projectNameId;
+    const taskId = req.params.taskId;
 
-    const result = await projectNameService.get(user, userId, projectNameId);
+    const result = await taskService.get(user, projectNameId, taskId);
 
     res.status(200).json({
       data: result,
@@ -34,16 +34,16 @@ const get = async (req, res, next) => {
   }
 };
 
-// update project name controller
+// update task controller
 const update = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
     const projectNameId = req.params.projectNameId;
+    const taskId = req.params.taskId;
     const request = req.body;
-    request.id = projectNameId;
+    request.id = taskId;
 
-    const result = await projectNameService.update(user, userId, request);
+    const result = await taskService.update(user, projectNameId, request);
 
     res.status(200).json({
       data: result,
@@ -53,14 +53,14 @@ const update = async (req, res, next) => {
   }
 };
 
-// remove project name controller
+// remove task controller
 const remove = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
     const projectNameId = req.params.projectNameId;
+    const taskId = req.params.taskId;
 
-    const result = await projectNameService.remove(user, userId, projectNameId);
+    const result = await taskService.remove(user, projectNameId, taskId);
 
     res.status(200).json({
       data: "OK",
@@ -70,13 +70,13 @@ const remove = async (req, res, next) => {
   }
 };
 
-// list project name controller
+// list task controller
 const list = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
+    const projectNameId = req.params.projectNameId;
 
-    const result = await projectNameService.list(user, userId);
+    const result = await taskService.list(user, projectNameId);
 
     res.status(200).json({
       data: result,
@@ -86,7 +86,7 @@ const list = async (req, res, next) => {
   }
 };
 
-// search project name controller
+// search task controller
 const search = async (req, res, next) => {
   try {
     /*
@@ -95,12 +95,14 @@ const search = async (req, res, next) => {
     */
     const user = req.user;
     const request = {
-      title: req.query.title,
+      todoList: req.query.todoList,
+      todoListOnProgress: req.query.todoListOnProgress,
+      todoListDone: req.query.todoListDone,
       page: req.query.page,
       size: req.query.size,
     };
 
-    const result = await projectNameService.search(user, request);
+    const result = await taskService.search(user, request);
     res.status(200).json({
       data: result.data,
       paging: result.paging,
