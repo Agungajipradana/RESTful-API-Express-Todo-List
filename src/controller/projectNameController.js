@@ -5,9 +5,8 @@ const create = async (req, res, next) => {
   try {
     const user = req.user;
     const request = req.body;
-    const userId = req.params.userId;
 
-    const result = await projectNameService.create(user, userId, request);
+    const result = await projectNameService.create(user, request);
 
     res.status(200).json({
       data: result,
@@ -21,10 +20,10 @@ const create = async (req, res, next) => {
 const get = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
+
     const projectNameId = req.params.projectNameId;
 
-    const result = await projectNameService.get(user, userId, projectNameId);
+    const result = await projectNameService.get(user, projectNameId);
 
     res.status(200).json({
       data: result,
@@ -38,12 +37,12 @@ const get = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
+
     const projectNameId = req.params.projectNameId;
     const request = req.body;
     request.id = projectNameId;
 
-    const result = await projectNameService.update(user, userId, request);
+    const result = await projectNameService.update(user, request);
 
     res.status(200).json({
       data: result,
@@ -57,11 +56,10 @@ const update = async (req, res, next) => {
 const remove = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
+
     const projectNameId = req.params.projectNameId;
 
-    const result = await projectNameService.remove(user, userId, projectNameId);
-
+    await projectNameService.remove(user, projectNameId);
     res.status(200).json({
       data: "OK",
     });
@@ -74,9 +72,9 @@ const remove = async (req, res, next) => {
 const list = async (req, res, next) => {
   try {
     const user = req.user;
-    const userId = req.params.userId;
+    const request = req.body;
 
-    const result = await projectNameService.list(user, userId);
+    const result = await projectNameService.list(user, request);
 
     res.status(200).json({
       data: result,

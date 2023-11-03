@@ -1,33 +1,13 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/responseError.js";
-import { createProjectNameValidation, getProjectNameValidation, searchProjectNameValidation, updateProjectNameValidation } from "../validation/projectNameValidation.js";
-import { getUserValidation } from "../validation/userValidation.js";
+import { createProjectNameValidation, getProjectListValidation, getProjectNameValidation, searchProjectNameValidation, updateProjectNameValidation } from "../validation/projectNameValidation.js";
 import { validate } from "../validation/validation.js";
 
-const checkUserMustExists = async (user, userId) => {
-  userId = parseInt(validate(getUserValidation, userId));
-
-  const totalUserInDatabase = await prismaClient.user.count({
-    where: {
-      id: user.id,
-      id: userId,
-    },
-  });
-
-  // Mengecek data user didatabase
-  if (totalUserInDatabase !== 1) {
-    throw new ResponseError(404, "user is not found");
-  }
-
-  return userId;
-};
-
 // Create Project Name service
-const create = async (user, userId, request) => {
-  userId = await checkUserMustExists(user, userId);
+const create = async (user, request) => {
   // Jika datanya ada, dilakukan divalidasi
   const projectName = validate(createProjectNameValidation, request);
-  projectName.userId = userId;
+  projectName.userId = user.id;
 
   return prismaClient.projectName.create({
     data: projectName,
@@ -40,14 +20,13 @@ const create = async (user, userId, request) => {
 };
 
 // Get Project Name service
-const get = async (user, userId, projectNameId) => {
-  userId = await checkUserMustExists(user, userId);
+const get = async (user, projectNameId) => {
   projectNameId = validate(getProjectNameValidation, projectNameId);
 
   // Mengecek data project name didatabase
   const projectName = await prismaClient.projectName.findFirst({
     where: {
-      id: userId,
+      userId: user.id,
       id: projectNameId,
     },
     select: {
@@ -72,13 +51,12 @@ const get = async (user, userId, projectNameId) => {
 };
 
 // Update Project Name service
-const update = async (user, userId, request) => {
-  userId = await checkUserMustExists(user, userId);
+const update = async (user, request) => {
   const projectName = validate(updateProjectNameValidation, request);
 
   const totalProjectNameInDatabase = await prismaClient.projectName.count({
     where: {
-      userId: userId,
+      userId: user.id,
       id: projectName.id,
     },
   });
@@ -111,13 +89,12 @@ const update = async (user, userId, request) => {
 };
 
 // Remove Project Name service
-const remove = async (user, userId, projectNameId) => {
-  userId = await checkUserMustExists(user, userId);
+const remove = async (user, projectNameId) => {
   projectNameId = validate(getProjectNameValidation, projectNameId);
 
   const totalProjectNameInDatabase = await prismaClient.projectName.count({
     where: {
-      userId: userId,
+      userId: user.id,
       id: projectNameId,
     },
   });
@@ -134,12 +111,13 @@ const remove = async (user, userId, projectNameId) => {
 };
 
 //    List project name service
-const list = async (user, userId) => {
-  userId = await checkUserMustExists(user, userId);
+const list = async (user, request) => {
+  const projectName = validate(getProjectListValidation, request);
 
   return prismaClient.projectName.findMany({
     where: {
-      userId: userId,
+      userId: user.id,
+      title: projectName.title,
     },
     select: {
       id: true,

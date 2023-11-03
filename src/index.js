@@ -1,10 +1,5 @@
 import { app } from "./application/app.js";
-// import dotenv from "dotenv";
-// import cors from "cors";
 
-// app.use(cors());
-// dotenv.config();
-// const app = express();
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

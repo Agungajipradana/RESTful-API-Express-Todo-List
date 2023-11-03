@@ -6,7 +6,12 @@ const createProjectNameValidation = Joi.object({
 });
 
 // Get Project Name Validation
-const getProjectNameValidation = Joi.number().min(1).positive().required();
+const getProjectNameValidation = Joi.number().positive().required();
+
+// Validasi parameter permintaan GET
+const getProjectListValidation = Joi.object({
+  title: Joi.string().min(1).max(255).allow(""), // Judul opsional, minimal 1 karakter, maksimal 255 karakter
+}).options({ allowUnknown: true });
 
 // Update Project Name Validation
 const updateProjectNameValidation = Joi.object({
@@ -21,4 +26,4 @@ const searchProjectNameValidation = Joi.object({
   title: Joi.string().optional(),
 });
 
-export { createProjectNameValidation, getProjectNameValidation, updateProjectNameValidation, searchProjectNameValidation };
+export { createProjectNameValidation, getProjectNameValidation, updateProjectNameValidation, searchProjectNameValidation, getProjectListValidation };

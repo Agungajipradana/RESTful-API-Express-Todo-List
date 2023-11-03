@@ -13,11 +13,12 @@ userRouter.patch("/api/users/current", userController.update);
 userRouter.delete("/api/users/logout", userController.logout);
 
 // Project Name API
-userRouter.post("/api/users/:userId/project", projectNameController.create);
-userRouter.get("/api/users/:userId/project/:projectNameId", projectNameController.get);
-userRouter.put("/api/users/:userId/project/:projectNameId", projectNameController.update);
-userRouter.delete("/api/users/:userId/project/:projectNameId", projectNameController.remove);
-userRouter.get("/api/users/:userId/project", projectNameController.list);
+// userRouter.post("/api/users/:userId/project", projectNameController.create);
+userRouter.post("/api/project", projectNameController.create);
+userRouter.get("/api/project/:projectNameId", projectNameController.get);
+userRouter.put("/api/project/:projectNameId", projectNameController.update);
+userRouter.delete("/api/project/:projectNameId", projectNameController.remove);
+userRouter.get("/api/project", projectNameController.list);
 userRouter.get("/api/project", projectNameController.search);
 
 // Task API
